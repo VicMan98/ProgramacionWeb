@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>figura</title>
+	<link rel="stylesheet" type="text/css" href="estilo.css">
+    
+</head>
+<body>
+	<div align="center">
+		<!--combo-->
+		<form>
+			<label>Seleccione la figura:</label>	
+			<select  id="figuras" onchange="elegir()">
+				<option value="value1" >Triangulo</option> 
+				<option value="value2">Cuadrado</option>
+				<option value="value3">Circulo</option>
+			</select>
+			<br>
+			<br>
+			<label><b>Rellene los siguientes campos:</b></label>
+			<br>
+		</form>	
+		<!--datos de la tabla-->
+		<div class ="selecFigura">
+			<div id="figTriangulo">
+				<label>x1, y1:</label>
+				<input type="text" name="triangulo" id="cajaTriangulo1">
+				
+				<label>x2, y2:</label>
+				<input type="text" name="triangulo" id="cajaTriangulo2">
+				
+				<label>x3, y3:</label>
+				<input type="text" name="triangulo" id="cajaTriangulo3">
+			</div>
+
+			<div id="figCuadrado" style="display: none; ">
+				<label>Posicion x:</label>
+				<input type="text" name="cuadrado" id="cuadradoX">
+				
+				<label>Posicion y:</label>
+				<input type="text" name="cuadrado" id="cuadradoY">
+				
+				<label>Base:</label>
+				<input type="text" name="cuadrado" id="baseCuadrado">	
+				
+				<label>Altura:</label>
+				<input type="text" name="cuadrado" id="alturaCuadrado">
+			</div>
+
+			<div id="figCirculo" style="display: none;">
+				<label>Posicion x:</label>
+				<input type="text" name="cuadrado" id="circuloX">
+				<label>Posicion y:</label>
+				<input type="text" name="cuadrado" id="circuloY">
+				<label>Radio:</label>
+				<input type="text" name="cuadrado" id="radio">
+			</div>	
+		</div>
+		<br>
+		<label>Elige el color: 
+		<input type="color" name="color" id="color" value="#2824DA"></label><br><br>
+		<input type="button" id="dibujar" onclick="dibujar(),actualizar()" value="Dibujar Figura">
+		<input type="button" id="limpia" onclick="limpiarLienzo()" value="Vaciar Lienzo"><br>
+		<br>
+	</div>
+	<!--canvas-->
+	<div align="center" id="contenedor">
+		<canvas id="lienzo" width="1200" height="400" style="border:2px solid #000000; background-color:white">
+		</canvas>
+	</div>
+</body>
+<script type="text/javascript">
+	var c,cx,objetos;
+	function actualizar(){
+		for(var i=0;i<objetos.length;i++){
+			cx.fillStyle = objetos[i].color;
+			if(objetos[i].width == objetos[i].height || objetos[i].width != objetos[i].height){
+				cx.fillRect(objetos[i].x,objetos[i].y,objetos[i].width,objetos[i].height);
+			}
+			if(objetos[i].radius>0){
+				cx.arc(objetos[i].x,objetos[i].y,objetos[i].radius,objetos[i].startAngle,objetos[i].endAngle,objetos[i].anticlockwise);
+				objetos[i]=cx.fill();
+			}
+		}	
+	}
+	function elegir(){
+		var combo= document.getElementById("figuras");
+		var selected= combo.options[combo.selectedIndex].text;
+		alert(selected);
+
+		if(selected == "Triangulo"){
+			document.getElementById('figTriangulo').style.display="";
+			document.getElementById('figCuadrado').style.display="none";
+			document.getElementById('figCirculo').style.display="none";
+		}
+		if(selected == "Cuadrado"){
+			document.getElementById('figTriangulo').style.display="none";
+			document.getElementById('figCuadrado').style.display="";
+			document.getElementById('figCirculo').style.display="none";
+		}
+		if(selected == "Circulo"){
+			document.getElementById('figTriangulo').style.display="none";
+			document.getElementById('figCuadrado').style.display="none";
+			document.getElementById('figCirculo').style.display="";
+		}	
+	}
+	function dibujar(){
+		var combo= document.getElementById("figuras");
+		var selected= combo.options[combo.selectedIndex].text;
+		objetos=[];
+		
+		var selecColor = document.getElementById("color").value;
+
+		var parte1= document.getElementById("cajaTriangulo1").value;
+		var parte2= document.getElementById("cajaTriangulo2").value;
+		var parte3= document.getElementById("cajaTriangulo3").value;
+
+		//Cuadrado
+		var cuadBase= document.getElementById("baseCuadrado").value;
+		var cuadAltura= document.getElementById("alturaCuadrado").value;
+		var cuadPosX= document.getElementById("cuadradoX").value;
+		var cuadPosY= document.getElementById("cuadradoY").value;
+		//CIRCULO
+		var circuloPosX=document.getElementById("circuloX").value;
+		var circuloPosY=document.getElementById("circuloY").value;
+		var radioCirculo = document.getElementById("radio").value;
+
+		var c = document.getElementById("lienzo");
+	    var cx  = c.getContext("2d");
+
+		if(selected == "Triangulo"){
+			if(parte1==""){
+				alert("Hay campos vacios!!!");
+			}else{
+				 var arreglo1 = parte1.split(",");
+				 var arreglo2 = parte2.split(",");
+				 var arreglo3 = parte3.split(",");
+				cx.beginPath();
+				cx.fillStyle = selecColor;
+				cx.moveTo(arreglo1[0],arreglo1[1]);
+				cx.lineTo(arreglo2[0],arreglo2[1]);
+				cx.lineTo(arreglo3[0],arreglo3[1]);
+				cx.fill();
+				cx.closePath();
+			}
+		}
+		if(selected=="Cuadrado"){
+			if(cuadPosX=="" || cuadPosY=="" || cuadBase=="" || cuadAltura==""){
+				alert("Hay Campos vacios!!!!");
+			}else{
+				objetos.push({
+				x:cuadPosX, y:cuadPosY,
+				width: cuadBase, height:cuadAltura,
+				color:selecColor
+				});
+			}
+		}
+		//actualizar();
+		if(selected =="Circulo"){
+			if(circuloPosX=="" || circuloPosY==""||radioCirculo==""){
+				alert("Hay Campos Vacios!!!");
+			}else{
+				objetos.push({
+					x:circuloPosX, y:circuloPosY,
+					radius:radioCirculo,
+					startAngle:0,endAngle:2*Math.PI,
+					color:selecColor,anticlockwise:true
+				});
+			}
+		}	
+	}
+</script>
+
+</html>
