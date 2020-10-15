@@ -8,7 +8,7 @@
 <body>
 	<div align="center">
 		<!--combo-->
-		<form>
+		<form >
 			<label>Seleccione la figura:</label>	
 			<select  id="figuras" onchange="elegir()">
 				<option value="value1" >Triangulo</option> 
@@ -22,153 +22,173 @@
 		</form>	
 		<!--datos de la tabla-->
 		<div class ="selecFigura">
-			<div id="figTriangulo">
+			<div id="figuraTriangulo">
 				<label>x1, y1:</label>
-				<input type="text" name="triangulo" id="cajaTriangulo1">
-				
+				<input type="text" name="triangulo" id="pTri1">
+				<br>	
 				<label>x2, y2:</label>
-				<input type="text" name="triangulo" id="cajaTriangulo2">
-				
+				<input type="text" name="triangulo" id="pTri2">
+				<br>
 				<label>x3, y3:</label>
-				<input type="text" name="triangulo" id="cajaTriangulo3">
+				<input type="text" name="triangulo" id="pTri3">
 			</div>
 
-			<div id="figCuadrado" style="display: none; ">
+			<div id="figuraCuadrado" style="display: none; ">
 				<label>Posicion x:</label>
-				<input type="text" name="cuadrado" id="cuadradoX">
-				
+				<input type="text" name="cuadrado" id="pXcuadra">
+				<br>
 				<label>Posicion y:</label>
-				<input type="text" name="cuadrado" id="cuadradoY">
-				
+				<input type="text" name="cuadrado" id="pYcuadra">
+				<br>
 				<label>Base:</label>
-				<input type="text" name="cuadrado" id="baseCuadrado">	
-				
+				<input type="text" name="cuadrado" id="baseCuadra">	
+				<br>
 				<label>Altura:</label>
-				<input type="text" name="cuadrado" id="alturaCuadrado">
+				<input type="text" name="cuadrado" id="alturaCuadra">
 			</div>
 
-			<div id="figCirculo" style="display: none;">
+			<div id="figuraCirculo" style="display: none;">
 				<label>Posicion x:</label>
-				<input type="text" name="cuadrado" id="circuloX">
+				<input type="text" name="cuadrado" id="pXcircu"><br>
 				<label>Posicion y:</label>
-				<input type="text" name="cuadrado" id="circuloY">
+				<input type="text" name="cuadrado" id="pYcircu"><br>
 				<label>Radio:</label>
 				<input type="text" name="cuadrado" id="radio">
 			</div>	
 		</div>
 		<br>
-		<label>Elige el color: 
-		<input type="color" name="color" id="color" value="#2824DA"></label><br><br>
-		<input type="button" id="dibujar" onclick="dibujar(),actualizar()" value="Dibujar Figura">
-		<input type="button" id="limpia" onclick="limpiarLienzo()" value="Vaciar Lienzo"><br>
+		<label>Elige el color: </label>
+		<input type="color" name="color" id="color" value="#ff5722"><br><br>
+		<input type="button" id="envio" onclick="Enviar()" value="Mostrar"><br>
 		<br>
 	</div>
 	<!--canvas-->
 	<div align="center" id="contenedor">
-		<canvas id="lienzo" width="1200" height="400" style="border:2px solid #000000; background-color:white">
+		<canvas id="lienzo" width="500" height="500" style="border:0px solid #000000; background-color: #b2ebf2">
 		</canvas>
 	</div>
 </body>
 <script type="text/javascript">
-	var c,cx,objetos;
-	function actualizar(){
-		for(var i=0;i<objetos.length;i++){
-			cx.fillStyle = objetos[i].color;
-			if(objetos[i].width == objetos[i].height || objetos[i].width != objetos[i].height){
-				cx.fillRect(objetos[i].x,objetos[i].y,objetos[i].width,objetos[i].height);
-			}
-			if(objetos[i].radius>0){
-				cx.arc(objetos[i].x,objetos[i].y,objetos[i].radius,objetos[i].startAngle,objetos[i].endAngle,objetos[i].anticlockwise);
-				objetos[i]=cx.fill();
-			}
-		}	
-	}
+
 	function elegir(){
 		var combo= document.getElementById("figuras");
 		var selected= combo.options[combo.selectedIndex].text;
 		alert(selected);
 
 		if(selected == "Triangulo"){
-			document.getElementById('figTriangulo').style.display="";
-			document.getElementById('figCuadrado').style.display="none";
-			document.getElementById('figCirculo').style.display="none";
+			document.getElementById('figuraTriangulo').style.display="";
+			document.getElementById('figuraCuadrado').style.display="none";
+			document.getElementById('figuraCirculo').style.display="none";
 		}
 		if(selected == "Cuadrado"){
-			document.getElementById('figTriangulo').style.display="none";
-			document.getElementById('figCuadrado').style.display="";
-			document.getElementById('figCirculo').style.display="none";
+			document.getElementById('figuraTriangulo').style.display="none";
+			document.getElementById('figuraCuadrado').style.display="";
+			document.getElementById('figuraCirculo').style.display="none";
 		}
 		if(selected == "Circulo"){
-			document.getElementById('figTriangulo').style.display="none";
-			document.getElementById('figCuadrado').style.display="none";
-			document.getElementById('figCirculo').style.display="";
+			document.getElementById('figuraTriangulo').style.display="none";
+			document.getElementById('figuraCuadrado').style.display="none";
+			document.getElementById('figuraCirculo').style.display="";
 		}	
 	}
-	function dibujar(){
+
+	function Enviar(){
 		var combo= document.getElementById("figuras");
 		var selected= combo.options[combo.selectedIndex].text;
-		objetos=[];
+
+		//elegir color
+		var eColor= document.getElementById("color").value;
+
+		//varible TRIANGULOS
+		var pntri1= document.getElementById("pTri1").value;
+		var pntri2= document.getElementById("pTri2").value;
+		var pntri3= document.getElementById("pTri3").value;
+
+		//VARIABLES CUADRA
+		var bCuadra= document.getElementById("baseCuadra").value;
+		var aCuadra= document.getElementById("alturaCuadra").value;
+		var xCuadra= document.getElementById("pXcuadra").value;
+		var yCuadra= document.getElementById("pYcuadra").value;
+
+		//variable circulos
+		var xcircu=document.getElementById("pXcircu").value;
+		var ycircu=document.getElementById("pYcircu").value;
+		var radioCir = document.getElementById("radio").value;
 		
-		var selecColor = document.getElementById("color").value;
-
-		var parte1= document.getElementById("cajaTriangulo1").value;
-		var parte2= document.getElementById("cajaTriangulo2").value;
-		var parte3= document.getElementById("cajaTriangulo3").value;
-
-		//Cuadrado
-		var cuadBase= document.getElementById("baseCuadrado").value;
-		var cuadAltura= document.getElementById("alturaCuadrado").value;
-		var cuadPosX= document.getElementById("cuadradoX").value;
-		var cuadPosY= document.getElementById("cuadradoY").value;
-		//CIRCULO
-		var circuloPosX=document.getElementById("circuloX").value;
-		var circuloPosY=document.getElementById("circuloY").value;
-		var radioCirculo = document.getElementById("radio").value;
-
+		//variables canvas
 		var c = document.getElementById("lienzo");
-	    var cx  = c.getContext("2d");
+		var ctx = c.getContext("2d");
+		
+		if(selected=="Triangulo"){
+			if(pntri1=="" || pntri2=="" || pntri3==""){
+				alert("¡ERROR! Existen campos vacios");
+			}else{
+				ctx.clearRect(0,0, 500, 500);
+				var array1= pntri1.split(",");
+				var array2= pntri2.split(",");
+				var array3= pntri3.split(",");
+				ctx.beginPath();
+				ctx.fillStyle = eColor;
+				ctx.moveTo(array1[0],array1[1]);
+			    ctx.lineTo(array2[0],array2[1]);
+			    ctx.lineTo(array3[0],array3[1]);
+			    ctx.fill();
+			    ctx.closePath();
+			}
+			limpiar();
+		}
 
-		if(selected == "Triangulo"){
-			if(parte1==""){
-				alert("Hay campos vacios!!!");
-			}else{
-				 var arreglo1 = parte1.split(",");
-				 var arreglo2 = parte2.split(",");
-				 var arreglo3 = parte3.split(",");
-				cx.beginPath();
-				cx.fillStyle = selecColor;
-				cx.moveTo(arreglo1[0],arreglo1[1]);
-				cx.lineTo(arreglo2[0],arreglo2[1]);
-				cx.lineTo(arreglo3[0],arreglo3[1]);
-				cx.fill();
-				cx.closePath();
-			}
-		}
 		if(selected=="Cuadrado"){
-			if(cuadPosX=="" || cuadPosY=="" || cuadBase=="" || cuadAltura==""){
-				alert("Hay Campos vacios!!!!");
+			if(xCuadra==""||yCuadra=="" || bCuadra==""|| aCuadra==""){
+				alert("¡ERROR! Campos vacio");
 			}else{
-				objetos.push({
-				x:cuadPosX, y:cuadPosY,
-				width: cuadBase, height:cuadAltura,
-				color:selecColor
-				});
+				ctx.clearRect(0,0, 500, 500);
+				//cuadrado casa
+				ctx.beginPath();
+				ctx.fillStyle = eColor;
+				ctx.fillRect(xCuadra,yCuadra,bCuadra,aCuadra);//rectangulo
+				ctx.fill();
+			    ctx.closePath();
+				ctx.stroke();
 			}
+			limpiar();
 		}
-		//actualizar();
-		if(selected =="Circulo"){
-			if(circuloPosX=="" || circuloPosY==""||radioCirculo==""){
-				alert("Hay Campos Vacios!!!");
+
+		if(selected=="Circulo"){
+			if(xcircu==""|| ycircu=="" || radioCir==""){
+				alert("¡ERROR! Campos vacio");
 			}else{
-				objetos.push({
-					x:circuloPosX, y:circuloPosY,
-					radius:radioCirculo,
-					startAngle:0,endAngle:2*Math.PI,
-					color:selecColor,anticlockwise:true
-				});
+				ctx.clearRect(0,0, 500, 500);
+				//Empezamos a dibujar el circulo sol
+				ctx.beginPath();//empezar nueva forma
+			    ctx.strokeStyle = eColor;//establece un color contorno
+			    ctx.fillStyle = eColor; //color del relleno 
+			    ctx.lineWidth=10;//define el ancho de la linea actual
+			    ctx.arc(xcircu,ycircu,radioCir,0,2* Math.PI);//crear un circulo valor inicial en 0 y el angulo final
+			    ctx.fill();//relleno
+			    ctx.stroke();//grosor del contorno
+			    ctx.closePath();//se cierra el patth
 			}
-		}	
+			limpiar();
+		}
 	}
+
+	function limpiar(){
+		document.getElementById("pTri1").value="";
+		document.getElementById("pTri2").value="";
+		document.getElementById("pTri3").value="";
+
+		document.getElementById("pXcuadra").value="";
+		document.getElementById("pYcuadra").value="";
+		document.getElementById("baseCuadra").value="";
+		document.getElementById("alturaCuadra").value="";
+
+		document.getElementById("pXcircu").value="";
+		document.getElementById("pYcircu").value="";
+		document.getElementById("radio").value="";
+	}
+
+
 </script>
 
 </html>
