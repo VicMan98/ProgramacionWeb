@@ -70,8 +70,12 @@
 	</div>
 </body>
 <script type="text/javascript">
+var c = document.getElementById("lienzo");
+	    var cx  = c.getContext("2d");
 	var c,cx,objetos;
 	function actualizar(){
+		var c = document.getElementById("lienzo");
+	    var cx  = c.getContext("2d");
 		for(var i=0;i<objetos.length;i++){
 			cx.fillStyle = objetos[i].color;
 			if(objetos[i].width == objetos[i].height || objetos[i].width != objetos[i].height){
@@ -144,6 +148,7 @@
 				cx.closePath();
 			}
 		}
+		actualizar();
 		if(selected=="Cuadrado"){
 			if(cuadPosX=="" || cuadPosY=="" || cuadBase=="" || cuadAltura==""){
 				alert("Hay Campos vacios!!!!");
@@ -155,7 +160,7 @@
 				});
 			}
 		}
-		//actualizar();
+		actualizar();
 		if(selected =="Circulo"){
 			if(circuloPosX=="" || circuloPosY==""||radioCirculo==""){
 				alert("Hay Campos Vacios!!!");
@@ -167,7 +172,8 @@
 					color:selecColor,anticlockwise:true
 				});
 			}
-		}	
+		}
+		actualizar();	
 	}
 </script>
 
